@@ -3,6 +3,7 @@
 A simple PDF Chat App developed with FastAPI and React while integrating Gemini AI as its LLM. The app has a simple user system, a user can upload a pdf file to create a 'Chat Room' where they can communicate with the file. This way the user can experience the information in a more fluent and efficient manner.
 
 
+
 ## Features
 - Register and login as a user. View the Chat Rooms you previously created.
 - Upload PDF documents and create Chat Rooms using the scanned text of the said files.
@@ -11,10 +12,12 @@ A simple PDF Chat App developed with FastAPI and React while integrating Gemini 
 - View the uploaded PDF documents
 
 
+
 ## Prerequisites
 - Python 3.10
 - Node.js  v18.20
 - `pip` and `npm` for package management
+
 
 
 ## Installation
@@ -50,6 +53,7 @@ A simple PDF Chat App developed with FastAPI and React while integrating Gemini 
    ```
    npm run dev
    ```
+
 
 
 ## Some Visuals
