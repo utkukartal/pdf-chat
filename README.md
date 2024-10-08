@@ -56,6 +56,20 @@ A simple PDF Chat App developed with FastAPI and React while integrating Gemini 
 
 
 
+## API Endpoints
+### User
+- **POST** `/token/` returns login token if user is authenticated via email and password.
+- **POST** `/register/` register the user if given information is valid.
+### Chat Room
+- **POST** `/add-room/` after authenticating the user it creates a Chat Room with file uploaded
+- **DELETE** `/delete-room/{room_id}/` deletes the Room if its owner is trying to delete it
+- **GET** `/get-chat-rooms/` get Rooms connected to authenticated user
+### Conversation
+- **GET** `/get-conversation/{room_id}/` get Room's already existing conversation, if there is any
+- **POST** `/make-conversation/` either continues or start the conversation
+
+
+
 ## Some Visuals
 Below we can see the list of a users Chat Rooms. Its possible to view the PDF files, enter the Rooms or delete them.
 ![chat_rooms](https://github.com/user-attachments/assets/fd087f45-1495-4570-9a0f-3e8d11c6a5ba)
