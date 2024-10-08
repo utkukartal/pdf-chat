@@ -1,0 +1,99 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.env/
+env/
+venv/
+ENV/
+env.bak/
+*.env
+
+# FastAPI specific
+back_end/uploads/*
+instance/
+*.log
+
+# Alembic migrations
+back_end/alembic/versions/*.py
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+alembic.ini
+alembic/env.py
+
+# SQLAlchemy
+*.sqlite3
+*.db
+
+# SQLite database
+*.sqlite3
+*.db
+*.sqlite
+
+# Logs and local SQL files
+*.log
+*.sql
+
+# Ignore Python egg info
+*.egg-info/
+.eggs/
+
+# Pytest cache
+.pytest_cache/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Editor specific files
+*.swp
+*.swo
+*.swn
+
+# Test results and coverage reports
+htmlcov/
+.tox/
+.cache/
+coverage/*
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Ignore node_modules for React frontend
+frontend/node_modules/
+frontend/build/
+node_modules/
+
+# React build files
+build/
+dist/
+
+# Ignore environment variable files
+.env
+*.env
+
+# Ignore lock files (Python & JavaScript)
+Pipfile.lock
+poetry.lock
+package-lock.json
+yarn.lock
+
+# Ignore coverage reports
+coverage/
+*.cover
+*.coverage
+.coverage.*
+
+# Ignore macOS files
+.DS_Store
+Thumbs.db
+
+# Ignore Windows files
+*.bak
+*.tmp
+*.temp
+
