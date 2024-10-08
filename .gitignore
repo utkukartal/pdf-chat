@@ -12,7 +12,7 @@ env.bak/
 *.env
 
 # FastAPI specific
-back_end/uploads/*
+back_end/uploads/*.pdf
 instance/
 *.log
 
