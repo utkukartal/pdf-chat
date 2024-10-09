@@ -26,6 +26,7 @@ class ChatRoom(Base):
     file_path = Column(String, unique=True, index=True)
     file_size = Column(Integer)
     file_text = Column(Text)
+    file_page_count = Column(Integer)
     conversation = Column(Text)
     creation_date = Column(DateTime, default=dt.datetime.now())
     

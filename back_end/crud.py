@@ -20,8 +20,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-def create_chat_room(db: Session, current_user_id: int,file_name: str = None, file_path: str = None, file_text: str = None):
-    db_chat_room = models.ChatRoom(user_id=current_user_id, file_name=file_name, file_path=file_path, file_text=file_text, file_size=os.path.getsize(file_path), creation_date=dt.datetime.now())
+def create_chat_room(db: Session, current_user_id: int,file_name: str = None, file_path: str = None, file_text: str = None, file_page_count: int = None):
+    db_chat_room = models.ChatRoom(user_id=current_user_id, file_name=file_name, file_path=file_path, file_text=file_text, file_size=os.path.getsize(file_path), file_page_count=file_page_count, creation_date=dt.datetime.now())
     db.add(db_chat_room)
     db.commit()
     db.refresh(db_chat_room)

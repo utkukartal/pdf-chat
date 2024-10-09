@@ -1,7 +1,8 @@
-import jwt, os, shutil, fitz, json, google.generativeai as genai
+import jwt, os, shutil, fitz, json, io, pytesseract, google.generativeai as genai
 from datetime import datetime, timedelta, timezone
 from slugify import slugify
 from dotenv import load_dotenv
+from PIL import Image
 from jwt.exceptions import InvalidTokenError
 from sqlalchemy.orm import Session
 from typing import Annotated
@@ -45,16 +46,45 @@ app.add_middleware(
 
 ## Some usefull functions
 def extract_text_from_pdf(pdf_path):
-    # Open the PDF file
-    pdf_document = fitz.open(pdf_path)
-    text = ""
-    
-    # Loop through each page
-    for page_num in range(pdf_document.page_count):
-        page = pdf_document.load_page(page_num)
-        text += page.get_text()
+    try:
+        # Open the PDF file
+        pdf_document = fitz.open(pdf_path)
+        text = ""
+        page_count = pdf_document.page_count
 
-    return text
+        # Try to extract text directly
+        for page_num in range(pdf_document.page_count):
+            page = pdf_document.load_page(page_num)
+            text += page.get_text()
+        
+        # If that doesn't go well, try ocr
+        if text == '':
+            # Iterate over each page in the PDF
+            for page_number in range(pdf_document.page_count):
+                page = pdf_document.load_page(page_number)  # Load each page
+
+                # Get the images on the page
+                image_list = page.get_images(full=True)
+                if image_list:
+                    for image_index, img in enumerate(page.get_images(full=True)):
+                        xref = img[0]
+                        base_image = pdf_document.extract_image(xref)
+                        image_bytes = base_image["image"]
+
+                        # Convert the image bytes into a PIL Image
+                        image = Image.open(io.BytesIO(image_bytes))
+
+                        # Perform OCR using pytesseract
+                        text = pytesseract.image_to_string(image)
+                        text += text + "\n"
+
+            # Close the document when done
+            pdf_document.close()
+
+        return text, page_count
+    except:
+        # means the file isn't a viable pdf
+        return '', 0
 
 def get_unique_file_path(db: Session, file_name: str):
     counter=1
@@ -118,10 +148,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     )
     return schemas.Token(access_token=access_token, token_type="bearer")
 
-@app.get("/users/me", response_model=schemas.User)
-def get_user_me(current_user: Annotated[schemas.User, Depends(get_current_user)]):
-    return current_user
-
 @app.post("/register/")
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -144,8 +170,10 @@ def add_room(token: str = Depends(oauth2_scheme), file: UploadFile = File(...), 
     file_path = os.path.join(UPLOAD_DIRECTORY, slugified_file_name)
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    file_text = extract_text_from_pdf(file_path)
-    room = crud.create_chat_room(db=db, current_user_id=current_user.id, file_name=file_name, file_path=file_path, file_text=file_text)
+    file_text, file_page_count = extract_text_from_pdf(file_path)
+    if file_text == '':
+        raise HTTPException(status_code=400, detail="File isn't viable to create a conversation.")
+    room = crud.create_chat_room(db=db, current_user_id=current_user.id, file_name=file_name, file_path=file_path, file_text=file_text, file_page_count=file_page_count)
     return room
 
 @app.delete("/delete-room/{room_id}")

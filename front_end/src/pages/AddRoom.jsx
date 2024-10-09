@@ -33,10 +33,12 @@ const AddRooms = () => {
     
     const handleSubmit = async () => {
         setLoading(true);
+        alterFields(true);
 
         if (!file) {
             toast.error('Please select a file first.')
             setLoading(false);
+            alterFields(false);
             return;
         }
     
@@ -61,6 +63,7 @@ const AddRooms = () => {
 
             toast.error('An error occured, please reload and try again.')
             setLoading(false);
+            alterFields(false);
         } catch (error) {
             if(error.status == 401) {
                 toast.error('Timout, please login again.')
@@ -70,10 +73,19 @@ const AddRooms = () => {
                 return
             }
 
-            toast.error('Error during file upload:'+error)
+            var detail = ''
+            if(error.response && error.response.data.detail) {detail = error.response.data.detail}
+            toast.error('Error during file upload: '+detail)
             setLoading(false);
+            alterFields(false);
         }
     }
+    
+    function alterFields(is_disabled) {
+        document.getElementById('room_pdf').disabled = is_disabled
+        document.getElementById('button').disabled = is_disabled
+    }
+
 
     return (
         <div className='px-20 py-20 flex justify-center'>
@@ -95,14 +107,15 @@ const AddRooms = () => {
                         </div>
 
                         <FileInput accept="application/pdf"
-                            name="room_pdf" 
+                            name="room_pdf"
+                            id="room_pdf"
                             placeholder="Your room pdf"
                             onChange={handleChange}
                             required
                         />
                     </div>
 
-                    <Button type="button" onClick={handleSubmit}>Submit</Button>
+                    <Button type="button" id="button" onClick={handleSubmit}>Submit</Button>
                 </form>
             </div>
         </div>
