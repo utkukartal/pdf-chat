@@ -1,6 +1,6 @@
 # PDF Chat App
 
-A simple PDF Chat App developed with FastAPI and React while integrating Gemini AI as its LLM. The app has a simple user system, a user can upload a pdf file to create a 'Chat Room' where they can communicate with the file. This way the user can experience the information in a more fluent and efficient manner.
+A simple PDF Chat App developed with FastAPI and React while integrating Gemini AI as its LLM. The app has a simple user system, a user can upload a PDF document to create a 'Chat Room' where they can communicate with the file. This way the user can experience the information in a more fluent and efficient manner.
 
 
 
@@ -8,8 +8,9 @@ A simple PDF Chat App developed with FastAPI and React while integrating Gemini 
 - Register and login as a user. View the Chat Rooms you previously created.
 - Upload PDF documents and create Chat Rooms using the scanned text of the said files.
 - Converse with the PDF document via Gemini AI, conversations will be recorded so they can be continued in a later time.
-- Delete the Chat Room
-- View the uploaded PDF documents
+- Delete the Chat Room.
+- View the uploaded PDF documents.
+- Text is extracted from the PDF document either directly or via Pytesseract.
 
 
 
@@ -61,19 +62,19 @@ A simple PDF Chat App developed with FastAPI and React while integrating Gemini 
 - **POST** `/token/` returns login token if user is authenticated via email and password.
 - **POST** `/register/` register the user if given information is valid.
 ### Chat Room
-- **POST** `/add-room/` after authenticating the user it creates a Chat Room with file uploaded
+- **POST** `/add-room/` after authenticating the user it creates a Chat Room with the file user uploaded
 - **DELETE** `/delete-room/{room_id}/` deletes the Room if its owner is trying to delete it
 - **GET** `/get-chat-rooms/` get Rooms connected to authenticated user
 ### Conversation
 - **GET** `/get-conversation/{room_id}/` get Room's already existing conversation, if there is any
-- **POST** `/make-conversation/` either continues or start the conversation
+- **POST** `/make-conversation/` either continues or starts the conversation
 
 
 
 ## Some Visuals
 Below we can see the list of a users Chat Rooms. Its possible to view the PDF files, enter the Rooms or delete them.
 ![chat_rooms](https://github.com/user-attachments/assets/fd087f45-1495-4570-9a0f-3e8d11c6a5ba)
-In another example we can see the conversation about Dinosaur centered PDF file.
+In another example we can see the conversation about a Dinosaur centered PDF document.
 ![room](https://github.com/user-attachments/assets/3036030f-45b9-449a-aab8-32c2ffbc5b5c)
 
 
@@ -82,5 +83,5 @@ In another example we can see the conversation about Dinosaur centered PDF file.
 - **Frontend**: React, Axios
 - **LLM**: Gemini AI
 - **Database**: PostgreSQL
-- **Other**: SQLAlchemy, Alembic
+- **Other**: SQLAlchemy, Alembic, Pytesseract
 
